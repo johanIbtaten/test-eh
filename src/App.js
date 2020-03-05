@@ -1,66 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+import UserList from './components/user-list.component';
+import UserForm from './components/user-form.component';
+
+const App = () => {
+
+  // Variables d'initialisation des states
+  let usersInit = [
+    {id: 1, name: 'joe', rights: [1, 2]},
+    {id: 2, name: 'garcia', rights: [3]}
+    //,{id: 3, name: 'johan', rights: [2, 4]}
+  ];
+  
+  let rightsInit = [
+    {id: 1, name: 'video'},
+    {id: 2, name: 'audio'},
+    {id: 3, name: 'text'}
+    //,{id: 4, name: 'picture'}
+  ];
+
+  // On initialise nos différents states pour communiquer entre 
+  // nos deux composants UserList et UserForm
+  const [users, setUsers] = useState(usersInit);
+
+  const [rights] = useState(rightsInit);
+
+  // State de l'utilisateur courant sélectionné dans la UserList
+  const [user, setUser] = useState({});
+
+  // State qui permet d'afficher ou non le composant userForm
+  const [isFormDisplay, setIsFormDisplay] = useState(false);
+
+  // State qui stocke l'index du lien actif de la userList
+  const [activeIndex, setActiveIndex] = useState(null);
+
   return (
-    <div class="container">
-    <div class="row  mt-5">
-      <div class="col-4 offset-2">
-        <h2> UserList</h2>
-        <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action">Joe</a>
+    <div className="container">
+      <div className="row  mt-5">
 
-          <a href="#" class="list-group-item list-group-item-action active">This is a primary list group item</a>
-          <a href="#" class="list-group-item list-group-item-action">This is a secondary list group item</a>
-          <a href="#" class="list-group-item list-group-item-action">This is a success list group item</a>
+        <div className="col-4 offset-2">
+          { /*
+          On passe les différents setters et states en props dont on a besoin à la UserList
+          */ } 
+          <UserList users={users} allRights={rights} setUser={setUser} setIsFormDisplay={setIsFormDisplay} setActiveIndex={setActiveIndex} activeIndex={activeIndex} />
         </div>
+
+        <div className="col-4">
+          { /*
+          On affiche ou pas le composant UserForm selon la valeur du state isFormDisplay
+          */ } 
+          { isFormDisplay &&
+            <UserForm users={users} setUsers={setUsers} allRights={rights} user={user}  setIsFormDisplay={setIsFormDisplay} setActiveIndex={setActiveIndex} />
+          }
         </div>
-    
 
-    <div class="col-4">
-      <h2>Joe</h2>
-      <hr />
-      <form>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" class="form-control" id="name" />
-        </div>
-        
-        <div class="form-group">
-          <div class="mb-2">Droits</div>
-        
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="videoCheck" />
-              <label class="form-check-label" for="videoCheck">
-                vidéo
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="audioCheck" />
-              <label class="form-check-label" for="audioCheck">
-                audio
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="textCheck" />
-              <label class="form-check-label" for="textCheck">
-                text
-              </label>
-            </div>
-          </div>
-      
-        <hr />
-        <button class="btn btn-primary" type="submit">Save</button>
-
-      </form>
+      </div>
     </div>
-
-
-    </div>
-    </div>
-
-
   );
 }
 
