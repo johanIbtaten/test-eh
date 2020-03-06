@@ -30,6 +30,10 @@ const UserList = ({ users, allRights, setUser, setIsFormDisplay, setActiveIndex,
                 className={`list-group-item list-group-item-action ${index === activeIndex ? 'active': ''}`} 
                 onClick={(event) => {
                   // Au click :
+                  // On annule le comportement par défaut de l'événement onClick
+                  // sur un lien pour éviter la prise en compte du href
+                  event.preventDefault();
+
                   // On met à jour le state du user courant qui correpond au user du lien
                   // sur lequel on a cliqué
                   setUser(user);
